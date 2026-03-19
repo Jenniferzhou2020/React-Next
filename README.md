@@ -70,6 +70,32 @@ curl http://localhost:3000/api/auth/me \
   -H "Authorization: Bearer <token>"
 ```
 
+
+### Created 3 API endpoints:
+
+1. `POST /api/product` - Create new product
+
+Request body: productName, description, price, salePrice, csdnNumber, createdBy, categoryIds[]
+Returns: Created product with all relationships
+2. `GET /api/product` - Get all products (with optional category filter)
+
+-  Query param: ?categoryId=<id> to filter by category
+Returns: Array of products with images, storage, and categories
+3. GET /api/product/[id] - Get single product by ID
+
+- Returns: Single product with all relationships
+4. PATCH/PUT /api/product/[id] - Update product
+
+- Request body: Any fields to update (productName, price, salePrice, categoryIds[], etc.)
+- Returns: Updated product
+5. DELETE /api/product/[id] - Delete product
+
+- Returns: Success message
+GET /api/product/category/[categoryId] - Get all products in a category
+
+- Returns: Category info + array of products + count
+
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

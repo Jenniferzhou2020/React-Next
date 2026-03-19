@@ -41,6 +41,31 @@ async function main() {
     });
   }
   console.log(`Seeded order statuses: ${orderStatuses.join(", ")}`);
+
+  const productCategories = [
+    { productCategoryName: "Women", description: "Women's clothing and accessories" },
+    { productCategoryName: "Men", description: "Men's clothing and accessories" },
+    { productCategoryName: "Kids", description: "Children's clothing and toys" },
+    { productCategoryName: "Home", description: "Home decor and furnishings" },
+    { productCategoryName: "Electronics", description: "Electronic devices and gadgets" },
+    { productCategoryName: "Kitchen", description: "Kitchen appliances and tools" },
+    { productCategoryName: "Garden", description: "Garden and outdoor products" },
+    { productCategoryName: "Backyard", description: "Backyard furniture and equipment" },
+    { productCategoryName: "Furniture", description: "Furniture for all rooms" },
+    { productCategoryName: "Books", description: "Books and reading materials" },
+    { productCategoryName: "Music", description: "Musical instruments and audio equipment" },
+    { productCategoryName: "New Arrivals", description: "Recently added products" },
+    { productCategoryName: "Best Sellers", description: "Best selling products" }
+  ];
+
+  for (const category of productCategories) {
+    await prisma.productCategory.upsert({
+      where: { productCategoryName: category.productCategoryName },
+      update: {},
+      create: category,
+    });
+  }
+  console.log(`Seeded product categories: ${productCategories.map(pc => pc.productCategoryName).join(", ")}`);
 }
 
 main()

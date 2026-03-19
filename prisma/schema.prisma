@@ -41,14 +41,14 @@ model UserLoginLog {
 
 model ProductCategory {
   id                  Int      @id @default(autoincrement())
-  productCategoryName String
+  productCategoryName String   @unique
   description         String?
   comment             String?
   created             DateTime @default(now())
   createdBy           String?
   modified            DateTime @updatedAt
   modifiedBy          String?
-  products            Product[]
+  productCategoryLinks ProductCategoryLink[]
 }
 
 model Product {
@@ -56,18 +56,18 @@ model Product {
   productName         String
   description         String?
   price               Decimal
+  salePrice           Decimal?
   csdnNumber          String?
   created             DateTime        @default(now())
   createdBy           String?
   modified            DateTime        @updatedAt
   modifiedBy          String?
-  productCategory     ProductCategory @relation(fields: [productCategoryId], references: [id])
-  productCategoryId   Int
   productImages       ProductImage[]
   productStorage      ProductStorage?
   productsImports     ProductsImport[]
   shopCarts           ShopCart[]
   orderDetails        OrderDetail[]
+  productCategoryLinks ProductCategoryLink[]
 }
 
 model ProductImage {
@@ -98,6 +98,16 @@ model ProductsImport {
   modified  DateTime @updatedAt
   modifiedBy String?
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductCategoryLink {
+  id               Int             @id @default(autoincrement())
+  productId        Int
+  productCategoryId Int
+  product          Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productCategory  ProductCategory @relation(fields: [productCategoryId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, productCategoryId])
 }
 
 model Customer {
@@ -173,7 +183,7 @@ model Order {
 
 model BillingType {
   id              Int    @id @default(autoincrement())
-  billingTypeName String
+  billingTypeName String @unique
   comment         String?
   billingBankCardInfos BillingBankCardInfo[]
 }
@@ -198,7 +208,7 @@ model BillingBankCardInfo {
 
 model OrderStatus {
   id          Int    @id @default(autoincrement())
-  orderStatus String
+  orderStatus String @unique
   orders      Order[]
 }
 
