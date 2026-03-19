@@ -14,6 +14,33 @@ async function main() {
     });
   }
   console.log(`Seeded roles: ${roles.join(", ")}`);
+
+  const billingTypes = [
+    { billingTypeName: "Paypal", comment: "PayPal payment method" },
+    { billingTypeName: "CreditCard", comment: "Credit card payment" },
+    { billingTypeName: "MasterCard", comment: "MasterCard payment" },
+    { billingTypeName: "Debit", comment: "Debit card payment" }
+  ];
+
+  for (const billingType of billingTypes) {
+    await prisma.billingType.upsert({
+      where: { billingTypeName: billingType.billingTypeName },
+      update: {},
+      create: billingType,
+    });
+  }
+  console.log(`Seeded billing types: ${billingTypes.map(bt => bt.billingTypeName).join(", ")}`);
+
+  const orderStatuses = ["Ordered", "Shipping", "Received"];
+
+  for (const status of orderStatuses) {
+    await prisma.orderStatus.upsert({
+      where: { orderStatus: status },
+      update: {},
+      create: { orderStatus: status },
+    });
+  }
+  console.log(`Seeded order statuses: ${orderStatuses.join(", ")}`);
 }
 
 main()
